@@ -1,40 +1,42 @@
-import { useState } from 'react';
+import { Form, Input, Button, Card, Typography } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
+
+const { Title } = Typography
 
 export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const onFinish = (values: unknown) => {
+    // Luồng đăng nhập sẽ hoàn thiện ở M7
+    console.debug('Login attempt', values)
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-sm space-y-4 rounded-lg border p-6 bg-card">
-        <h1 className="text-xl font-bold">Đăng nhập Quản trị</h1>
-        <form className="space-y-4">
-          <div>
-            <label className="text-sm font-medium">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border px-3 py-2 text-sm mt-1"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium">Mật khẩu</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border px-3 py-2 text-sm mt-1"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-primary-foreground"
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#f5f5f5' }}>
+      <Card style={{ width: 380, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
+        <Title level={4} style={{ textAlign: 'center', marginBottom: 24 }}>
+          Đăng nhập Quản trị
+        </Title>
+        <Form layout="vertical" onFinish={onFinish}>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: 'Vui lòng nhập email!' }, { type: 'email', message: 'Email không hợp lệ!' }]}
           >
-            Đăng nhập
-          </button>
-        </form>
-      </div>
+            <Input prefix={<UserOutlined />} placeholder="admin@example.com" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="Mật khẩu"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Đăng nhập
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 }
