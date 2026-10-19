@@ -1,63 +1,64 @@
-import { Link, Outlet, useLocation } from 'react-router';
-import { DEFAULT_SITE_NAME } from '@/lib/brand';
-import { cn } from '@/lib/utils';
+import { Layout, Menu } from 'antd'
+import type { MenuProps } from 'antd'
+import {
+  AppstoreOutlined,
+  FileTextOutlined,
+  PictureOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  HistoryOutlined,
+  EnvironmentOutlined,
+  QuestionCircleOutlined,
+  CommentOutlined,
+  BookOutlined,
+} from '@ant-design/icons'
+import { Outlet, useLocation, useNavigate } from 'react-router'
+import { DEFAULT_SITE_NAME } from '@/lib/brand'
 
-const navItems = [
-  { href: '/', label: 'Tổng quan' },
-  { href: '/services', label: 'Dịch vụ' },
-  { href: '/posts', label: 'Bài viết' },
-  { href: '/pages', label: 'Trang tĩnh' },
-  { href: '/slides', label: 'Slide / Banner' },
-  { href: '/testimonials', label: 'Ý kiến khách' },
-  { href: '/faqs', label: 'Hỏi đáp' },
-  { href: '/albums', label: 'Album' },
-  { href: '/media', label: 'Media' },
-  { href: '/branches', label: 'Chi nhánh' },
-  { href: '/settings', label: 'Cài đặt' },
-  { href: '/users', label: 'Tài khoản' },
-  { href: '/audit-logs', label: 'Nhật ký' },
-];
+const { Header, Sider, Content } = Layout
+
+const items: MenuProps['items'] = [
+  { key: '/', icon: <AppstoreOutlined />, label: 'Tổng quan' },
+  { key: '/services', icon: <BookOutlined />, label: 'Dịch vụ' },
+  { key: '/posts', icon: <FileTextOutlined />, label: 'Bài viết' },
+  { key: '/pages', icon: <FileTextOutlined />, label: 'Trang tĩnh' },
+  { key: '/slides', icon: <PictureOutlined />, label: 'Slide / Banner' },
+  { key: '/testimonials', icon: <CommentOutlined />, label: 'Ý kiến khách' },
+  { key: '/faqs', icon: <QuestionCircleOutlined />, label: 'Hỏi đáp' },
+  { key: '/albums', icon: <PictureOutlined />, label: 'Album' },
+  { key: '/media', icon: <PictureOutlined />, label: 'Media' },
+  { key: '/branches', icon: <EnvironmentOutlined />, label: 'Chi nhánh' },
+  { key: '/settings', icon: <SettingOutlined />, label: 'Cài đặt' },
+  { key: '/users', icon: <TeamOutlined />, label: 'Tài khoản' },
+  { key: '/audit-logs', icon: <HistoryOutlined />, label: 'Nhật ký' },
+]
 
 export function AdminShell() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
-      {/* Sidebar */}
-      <aside className="w-60 border-r bg-card flex flex-col shrink-0">
-        <div className="h-14 border-b flex items-center px-4 font-bold text-sm tracking-wide">
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider width={220} theme="light" style={{ borderRight: '1px solid #f0f0f0' }}>
+        <div style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 16px', fontWeight: 700, fontSize: 15, borderBottom: '1px solid #f0f0f0' }}>
           {DEFAULT_SITE_NAME}
         </div>
-        <nav className="p-3 space-y-1 flex-1 overflow-y-auto text-sm">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  'block px-3 py-2 rounded-md font-medium transition-colors',
-                  isActive
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-
-      {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 border-b flex items-center justify-between px-6 bg-card shrink-0">
-          <h1 className="text-sm font-semibold">Trang quản trị</h1>
-        </header>
-        <main className="flex-1 p-6 overflow-y-auto">
+        <Menu
+          mode="inline"
+          selectedKeys={[location.pathname]}
+          items={items}
+          onClick={({ key }) => navigate(key)}
+          style={{ borderRight: 0 }}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ background: '#fff', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', borderBottom: '1px solid #f0f0f0' }}>
+          <h1 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>Quản trị</h1>
+        </Header>
+        <Content style={{ margin: 24, padding: 24, background: '#fff', borderRadius: 8, minHeight: 280 }}>
           <Outlet />
-        </main>
-      </div>
-    </div>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }
