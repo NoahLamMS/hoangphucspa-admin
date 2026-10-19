@@ -1,0 +1,8 @@
+/*
+ * Token giao diện riêng của trang quản trị (trung lập, chưa có thương hiệu thật).
+ * Màu/bo góc của shadcn nằm ở src/index.css; thương hiệu thật sẽ chỉnh ở đây.
+ */
+:root {
+  --admin-header-height: 3.5rem;
+  --admin-content-max-width: 72rem;
+}
